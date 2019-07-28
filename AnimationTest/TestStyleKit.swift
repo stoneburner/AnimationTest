@@ -19,7 +19,7 @@ public class TestStyleKit : NSObject {
 
     private struct Cache {
         static let color: UIColor = UIColor(red: 0.241, green: 0.827, blue: 0.326, alpha: 1.000)
-        static let shadow: NSShadow = NSShadow(color: UIColor.black, offset: CGSize(width: 3, height: 3), blurRadius: 5)
+        static let shadow: NSShadow = NSShadow(color: UIColor.black.withAlphaComponent(0.43), offset: CGSize(width: 1, height: 1), blurRadius: 2)
     }
 
     //// Colors
@@ -32,7 +32,7 @@ public class TestStyleKit : NSObject {
 
     //// Drawing Methods
 
-    @objc dynamic public class func drawProgressDisplay(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 140, height: 140), resizing: ResizingBehavior = .aspectFit, progress: CGFloat = 0) {
+    @objc dynamic public class func drawProgressDisplay(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 140, height: 140), resizing: ResizingBehavior = .aspectFit, progress: CGFloat = 0.672) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
