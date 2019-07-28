@@ -17,6 +17,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func setRandomValueTapped(_ sender: Any) {
+        let value = Double.random(in: 0...1)
+        NSLog("setting progress to:\(value)")
+        progressView.progress = value
+    }
+    
 }
 

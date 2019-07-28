@@ -31,10 +31,19 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6m-ds-bdo">
+                                <rect key="frame" x="144" y="362" width="126" height="30"/>
+                                <state key="normal" title="Set Random Value"/>
+                                <connections>
+                                    <action selector="setRandomValueTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5gP-yP-E0w"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ZZc-JO-D6g" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="4qD-b2-i8K"/>
+                            <constraint firstItem="P6m-ds-bdo" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6Bh-Er-H6A"/>
+                            <constraint firstItem="P6m-ds-bdo" firstAttribute="top" secondItem="ZZc-JO-D6g" secondAttribute="bottom" constant="35" id="AUH-vK-nDw"/>
                             <constraint firstItem="ZZc-JO-D6g" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="87" id="NV0-bP-nOA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
