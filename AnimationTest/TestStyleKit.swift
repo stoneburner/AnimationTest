@@ -18,8 +18,8 @@ public class TestStyleKit : NSObject {
     //// Cache
 
     private struct Cache {
-        static let color: UIColor = UIColor(red: 0.241, green: 0.827, blue: 0.326, alpha: 1.000)
-        static let shadow: NSShadow = NSShadow(color: UIColor.black.withAlphaComponent(0.43), offset: CGSize(width: 1, height: 1), blurRadius: 2)
+        static let color: UIColor = UIColor(red: 0.000, green: 0.430, blue: 0.819, alpha: 1.000)
+        static let shadow: NSShadow = NSShadow(color: UIColor.black.withAlphaComponent(0.23), offset: CGSize(width: 1, height: 1), blurRadius: 1)
     }
 
     //// Colors
@@ -47,7 +47,7 @@ public class TestStyleKit : NSObject {
 
         //// Variable Declarations
         let progressEndAngle: CGFloat = progress == 1 ? 0.001 : 360 * (1 - progress)
-        let starRotation: CGFloat = progressEndAngle / 5.0
+        let percentText = "\(Int(round(round(progress * 100))))" + "%"
 
         //// Oval Drawing
         context.saveGState()
@@ -61,38 +61,49 @@ public class TestStyleKit : NSObject {
         context.saveGState()
         context.setShadow(offset: CGSize(width: TestStyleKit.shadow.shadowOffset.width * resizedShadowScale, height: TestStyleKit.shadow.shadowOffset.height * resizedShadowScale), blur: TestStyleKit.shadow.shadowBlurRadius * resizedShadowScale, color: (TestStyleKit.shadow.shadowColor as! UIColor).cgColor)
         TestStyleKit.color.setStroke()
-        ovalPath.lineWidth = 10
-        ovalPath.lineCapStyle = .round
+        ovalPath.lineWidth = 7.5
         ovalPath.stroke()
         context.restoreGState()
 
         context.restoreGState()
 
 
-        //// Star Drawing
-        context.saveGState()
-        context.translateBy(x: 69.64, y: 72.32)
-        context.rotate(by: -starRotation * CGFloat.pi/180)
+        //// Text Drawing
+        let textRect = CGRect(x: 10, y: 56, width: 130, height: 28)
+        let textStyle = NSMutableParagraphStyle()
+        textStyle.alignment = .center
+        let textFontAttributes = [
+            .font: UIFont.systemFont(ofSize: 31),
+            .foregroundColor: UIColor.black,
+            .paragraphStyle: textStyle,
+        ] as [NSAttributedString.Key: Any]
 
-        let starPath = UIBezierPath()
-        starPath.move(to: CGPoint(x: -20.44, y: 5.52))
-        starPath.addLine(to: CGPoint(x: -12.63, y: -5.39))
-        starPath.addLine(to: CGPoint(x: -13.47, y: -18.77))
-        starPath.addLine(to: CGPoint(x: -0.68, y: -14.72))
-        starPath.addLine(to: CGPoint(x: 11.79, y: -19.66))
-        starPath.addLine(to: CGPoint(x: 11.89, y: -6.24))
-        starPath.addLine(to: CGPoint(x: 20.44, y: 4.09))
-        starPath.addLine(to: CGPoint(x: 7.71, y: 8.33))
-        starPath.addLine(to: CGPoint(x: 0.52, y: 19.66))
-        starPath.addLine(to: CGPoint(x: -7.45, y: 8.86))
-        starPath.addLine(to: CGPoint(x: -20.44, y: 5.52))
-        starPath.close()
+        let textTextHeight: CGFloat = percentText.boundingRect(with: CGSize(width: textRect.width, height: CGFloat.infinity), options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil).height
         context.saveGState()
-        context.setShadow(offset: CGSize(width: TestStyleKit.shadow.shadowOffset.width * resizedShadowScale, height: TestStyleKit.shadow.shadowOffset.height * resizedShadowScale), blur: TestStyleKit.shadow.shadowBlurRadius * resizedShadowScale, color: (TestStyleKit.shadow.shadowColor as! UIColor).cgColor)
-        TestStyleKit.color.setFill()
-        starPath.fill()
+        context.clip(to: textRect)
+        percentText.draw(in: CGRect(x: textRect.minX, y: textRect.minY + (textRect.height - textTextHeight) / 2, width: textRect.width, height: textTextHeight), withAttributes: textFontAttributes)
         context.restoreGState()
 
+
+        //// progressRingBackground Drawing
+        context.saveGState()
+        context.translateBy(x: 70, y: 70)
+        context.rotate(by: -90 * CGFloat.pi/180)
+
+        context.saveGState()
+        context.setAlpha(0.2)
+        context.beginTransparencyLayer(auxiliaryInfo: nil)
+
+        let progressRingBackgroundPath = UIBezierPath(ovalIn: CGRect(x: -60, y: -60, width: 120, height: 120))
+        context.saveGState()
+        context.setShadow(offset: CGSize(width: TestStyleKit.shadow.shadowOffset.width * resizedShadowScale, height: TestStyleKit.shadow.shadowOffset.height * resizedShadowScale), blur: TestStyleKit.shadow.shadowBlurRadius * resizedShadowScale, color: (TestStyleKit.shadow.shadowColor as! UIColor).cgColor)
+        TestStyleKit.color.setStroke()
+        progressRingBackgroundPath.lineWidth = 7.5
+        progressRingBackgroundPath.stroke()
+        context.restoreGState()
+
+        context.endTransparencyLayer()
+        context.restoreGState()
 
         context.restoreGState()
         
