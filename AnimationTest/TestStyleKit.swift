@@ -32,7 +32,7 @@ public class TestStyleKit : NSObject {
 
     //// Drawing Methods
 
-    @objc dynamic public class func drawProgressDisplay(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 140, height: 140), resizing: ResizingBehavior = .aspectFit, progress: CGFloat = 0.127) {
+    @objc dynamic public class func drawProgressDisplay(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 140, height: 140), resizing: ResizingBehavior = .aspectFit, progress: CGFloat = 0) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -47,6 +47,7 @@ public class TestStyleKit : NSObject {
 
         //// Variable Declarations
         let progressEndAngle: CGFloat = progress == 1 ? 0.001 : 360 * (1 - progress)
+        let starRotation: CGFloat = progressEndAngle / 5.0
 
         //// Oval Drawing
         context.saveGState()
@@ -69,21 +70,31 @@ public class TestStyleKit : NSObject {
 
 
         //// Star Drawing
+        context.saveGState()
+        context.translateBy(x: 69.64, y: 72.32)
+        context.rotate(by: -starRotation * CGFloat.pi/180)
+
         let starPath = UIBezierPath()
-        starPath.move(to: CGPoint(x: 49.21, y: 77.84))
-        starPath.addLine(to: CGPoint(x: 57.01, y: 66.93))
-        starPath.addLine(to: CGPoint(x: 56.17, y: 53.54))
-        starPath.addLine(to: CGPoint(x: 68.96, y: 57.59))
-        starPath.addLine(to: CGPoint(x: 81.43, y: 52.66))
-        starPath.addLine(to: CGPoint(x: 81.53, y: 66.07))
-        starPath.addLine(to: CGPoint(x: 90.08, y: 76.41))
-        starPath.addLine(to: CGPoint(x: 77.35, y: 80.65))
-        starPath.addLine(to: CGPoint(x: 70.16, y: 91.97))
-        starPath.addLine(to: CGPoint(x: 62.2, y: 81.18))
-        starPath.addLine(to: CGPoint(x: 49.21, y: 77.84))
+        starPath.move(to: CGPoint(x: -20.44, y: 5.52))
+        starPath.addLine(to: CGPoint(x: -12.63, y: -5.39))
+        starPath.addLine(to: CGPoint(x: -13.47, y: -18.77))
+        starPath.addLine(to: CGPoint(x: -0.68, y: -14.72))
+        starPath.addLine(to: CGPoint(x: 11.79, y: -19.66))
+        starPath.addLine(to: CGPoint(x: 11.89, y: -6.24))
+        starPath.addLine(to: CGPoint(x: 20.44, y: 4.09))
+        starPath.addLine(to: CGPoint(x: 7.71, y: 8.33))
+        starPath.addLine(to: CGPoint(x: 0.52, y: 19.66))
+        starPath.addLine(to: CGPoint(x: -7.45, y: 8.86))
+        starPath.addLine(to: CGPoint(x: -20.44, y: 5.52))
         starPath.close()
+        context.saveGState()
+        context.setShadow(offset: CGSize(width: TestStyleKit.shadow.shadowOffset.width * resizedShadowScale, height: TestStyleKit.shadow.shadowOffset.height * resizedShadowScale), blur: TestStyleKit.shadow.shadowBlurRadius * resizedShadowScale, color: (TestStyleKit.shadow.shadowColor as! UIColor).cgColor)
         TestStyleKit.color.setFill()
         starPath.fill()
+        context.restoreGState()
+
+
+        context.restoreGState()
         
         context.restoreGState()
 

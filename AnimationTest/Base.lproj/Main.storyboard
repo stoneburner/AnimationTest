@@ -35,7 +35,7 @@
                                 <rect key="frame" x="144" y="362" width="126" height="30"/>
                                 <state key="normal" title="Set Random Value"/>
                                 <connections>
-                                    <action selector="setRandomValueTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5gP-yP-E0w"/>
+                                    <action selector="setRandomValueTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Xb-je-pdj"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -49,7 +49,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="progressView" destination="ZZc-JO-D6g" id="rUY-8w-DGN"/>
+                        <outlet property="progressView" destination="ZZc-JO-D6g" id="r9S-YJ-tYs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -8,26 +8,61 @@
 
 import UIKit
 
+class ProgressAnimationLayer: CALayer {
+    @NSManaged var progress: CGFloat
+
+    override init() {
+        super.init()
+        progress = 0.5
+        needsDisplayOnBoundsChange = true
+    }
+
+    override init(layer: Any) {
+        super.init(layer: layer)
+
+        if let layer = layer as? ProgressAnimationLayer {
+            progress = layer.progress
+        }
+    }
+
+    override class func needsDisplay(forKey key: (String?)) -> Bool {
+        if key! == "progress" {
+            return true
+        } else {
+            return super.needsDisplay(forKey: key!)
+        }
+    }
+
+    override func action(forKey event: String) -> CAAction? {
+        if event == "progress" {
+            let animation = CABasicAnimation(keyPath: event)
+            animation.fromValue = self.presentation()?.value(forKey: event)
+            return animation
+        } else {
+            return super.action(forKey: event)
+        }
+    }
+
+    override func draw(in ctx: CGContext) {
+        UIGraphicsPushContext(ctx)
+        let size = ctx.convertToUserSpace(CGSize(width: ctx.width, height: ctx.height))
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        TestStyleKit.drawProgressDisplay(frame: rect,
+                                         resizing: .aspectFit,
+                                         progress: progress)
+        UIGraphicsPopContext()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 @IBDesignable class CustomProgressView: UIView {
 
-    @IBInspectable var progress: Double = 0.5 { didSet { updateProgress() } }
-    var displayProgress: Double = 0.0
-    
-    var animator: UIViewPropertyAnimator?
-    
-    override func draw(_ rect: CGRect) {
-        TestStyleKit.drawProgressDisplay(frame: rect, resizing: .aspectFit, progress: CGFloat(displayProgress))
-    }
-
-    func updateProgress() {
-        animator = UIViewPropertyAnimator(duration: 0.5, curve: .easeOut) {
-            NSLog("SD:\(self.progress)")
-            self.displayProgress = self.progress
-        }
-        animator?.startAnimation()
-    }
-    
-    func updateAnimation() {
-        animator?.fractionComplete
+    override func layoutSubviews() {
+        //self.layer
+        //mylayer.frame = self.bounds;
     }
 }
