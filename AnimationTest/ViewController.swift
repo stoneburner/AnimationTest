@@ -22,8 +22,6 @@ class ViewController: UIViewController {
 
     @IBAction func setRandomValueTapped(_ sender: Any) {
         let value = Double.random(in: 0...1)
-
-        NSLog("setting progressview value to:\(value)")
         progressView.progress = CGFloat(value)
     }
     
