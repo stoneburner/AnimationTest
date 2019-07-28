@@ -75,13 +75,20 @@ class ProgressAnimationLayer: CALayer {
     }
 
     private func updateValue() {
-        let layerState : Bool = !((animatedLayer.value(forKey: stateKeyName) as AnyObject).boolValue)!
+
+        // in the storyboard preview the state is not set
+        guard let layerState = ((animatedLayer.value(forKey: stateKeyName) as AnyObject).boolValue) else {
+            animatedLayer.progress = progress
+            animatedLayer.setValue(false, forKey: stateKeyName)
+            return
+        }
+
         let timing : CAMediaTimingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(timing)
         animatedLayer.progress = progress
         CATransaction.commit()
-        animatedLayer.setValue(layerState, forKey: stateKeyName)
+        animatedLayer.setValue(!layerState, forKey: stateKeyName)
     }
 
     override func layoutSubviews() {
