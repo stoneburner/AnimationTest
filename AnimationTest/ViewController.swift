@@ -10,10 +10,18 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var progressView: CustomProgressView!
+    @IBOutlet weak var progressView: CircleProgressView!
+
+    @IBOutlet weak var smallCircleView: CircleProgressView!
+    @IBOutlet weak var smallCircleView2: CircleProgressView!
+    @IBOutlet weak var smallCircleView3: CircleProgressView!
+    @IBOutlet weak var smallCircleView4: CircleProgressView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        smallCircleView.progress = 0.3
+        smallCircleView.layoutSubviews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -21,8 +29,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func setRandomValueTapped(_ sender: Any) {
-        let value = Double.random(in: 0...1)
-        progressView.progress = CGFloat(value)
+        progressView.progress = CGFloat(Double.random(in: 0...1))
+        smallCircleView.progress = CGFloat(Double.random(in: 0...1))
+        smallCircleView2.progress = CGFloat(Double.random(in: 0...1))
+        smallCircleView3.progress = CGFloat(Double.random(in: 0...1))
+        smallCircleView4.progress = CGFloat(Double.random(in: 0...1))
     }
     
 }

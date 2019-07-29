@@ -1,26 +1,31 @@
 //
-//  CustomProgressView.swift
+//  AnimationHelper.swift
 //  AnimationTest
 //
-//  Created by Alexander Kasimir on 28.07.19.
+//  Created by Alexander Kasimir on 29.07.19.
 //  Copyright © 2019 Alexander Kasimir. All rights reserved.
 //
 
 import UIKit
 
-class ProgressAnimationLayer: CALayer {
+typealias DrawingFunction = (_ frame: CGRect, _ resizing: TestStyleKit.ResizingBehavior, _ progress: CGFloat) -> Void
+
+class ProgressAnimationHelperLayer: CALayer {
     @NSManaged var progress: CGFloat
     private static let keyName = "progress"
 
-    override init() {
+    static var drawingFunction: DrawingFunction?
+
+    init(drawingFunction: @escaping DrawingFunction) {
         super.init()
         progress = 0
+        ProgressAnimationHelperLayer.drawingFunction = drawingFunction
         needsDisplayOnBoundsChange = true
     }
 
     override init(layer: Any) {
         super.init(layer: layer)
-        if let layer = layer as? ProgressAnimationLayer {
+        if let layer = layer as? ProgressAnimationHelperLayer {
             progress = layer.progress
         }
     }
@@ -34,7 +39,7 @@ class ProgressAnimationLayer: CALayer {
     }
 
     override func action(forKey event: String) -> CAAction? {
-        if event == ProgressAnimationLayer.keyName {
+        if event == ProgressAnimationHelperLayer.keyName {
             let animation = CABasicAnimation(keyPath: event)
             animation.fromValue = self.presentation()?.value(forKey: event)
             return animation
@@ -47,9 +52,7 @@ class ProgressAnimationLayer: CALayer {
         UIGraphicsPushContext(ctx)
         let size = ctx.convertToUserSpace(CGSize(width: ctx.width, height: ctx.height))
         let rect = CGRect(origin: CGPoint.zero, size: size)
-        TestStyleKit.drawProgressDisplay(frame: rect,
-                                         resizing: .aspectFit,
-                                         progress: progress)
+        ProgressAnimationHelperLayer.drawingFunction?(rect, .aspectFit, progress)
         UIGraphicsPopContext()
     }
 
@@ -59,11 +62,13 @@ class ProgressAnimationLayer: CALayer {
     }
 }
 
-@IBDesignable class CustomProgressView: UIView {
+protocol AnimatedUIView: UIView {
+    var animatedLayer: ProgressAnimationHelperLayer { get set }
+    var progress: CGFloat { get set }
+    var stateKeyName: String { get set }
+}
 
-    @IBInspectable var progress: CGFloat = 0.5 { didSet { updateValue() } }
-    private let stateKeyName = "state"
-    private let animatedLayer = ProgressAnimationLayer()
+extension AnimatedUIView {
 
     func setupAnimationLayer() {
         guard self.layer.sublayers == nil || self.layer.sublayers?.contains(animatedLayer) == false else { return }
@@ -74,8 +79,7 @@ class ProgressAnimationLayer: CALayer {
         animatedLayer.setNeedsDisplay()
     }
 
-    private func updateValue() {
-
+    internal func updateValue() {
         // in the storyboard preview the state is not set
         guard let layerState = ((animatedLayer.value(forKey: stateKeyName) as AnyObject).boolValue) else {
             animatedLayer.progress = progress
@@ -89,10 +93,5 @@ class ProgressAnimationLayer: CALayer {
         animatedLayer.progress = progress
         CATransaction.commit()
         animatedLayer.setValue(!layerState, forKey: stateKeyName)
-    }
-
-    override func layoutSubviews() {
-        setupAnimationLayer()
-        animatedLayer.frame = self.bounds
     }
 }
