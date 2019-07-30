@@ -8,22 +8,46 @@
 
 import UIKit
 
-private extension TestStyleKit {
-    static func drawAnimatedProgressDisplay (_ frame: CGRect, resizing: TestStyleKit.ResizingBehavior, progress: CGFloat) {
-        TestStyleKit.drawProgressDisplay(frame: frame, resizing: resizing, progress: progress)
+class CircleProgressAnimationLayer: ProgressAnimationLayer {
+    override func draw(in ctx: CGContext) {
+        UIGraphicsPushContext(ctx)
+        let size = ctx.convertToUserSpace(CGSize(width: ctx.width, height: ctx.height))
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        TestStyleKit.drawProgressCircleDisplay(frame: rect, resizing: .aspectFit, progress: progress)
+        UIGraphicsPopContext()
     }
 }
 
 @IBDesignable class CircleProgressView: UIView, AnimatedUIView {
-
     @IBInspectable var progress: CGFloat = 0.5 { didSet { updateValue() } }
 
+    var animatedLayer: Progressable = CircleProgressAnimationLayer()
     var stateKeyName = "state"
-    var animatedLayer = ProgressAnimationHelperLayer(drawingFunction: TestStyleKit.drawAnimatedProgressDisplay)
 
     override func layoutSubviews() {
         setupAnimationLayer()
         animatedLayer.frame = self.bounds
     }
 
+}
+
+@IBDesignable class BarProgressView: UIView, AnimatedUIView {
+    @IBInspectable var progress: CGFloat = 0.5 { didSet { updateValue() } }
+    var animatedLayer: Progressable = ProgressBarAnimationLayer()
+    var stateKeyName = "state"
+
+    override func layoutSubviews() {
+        setupAnimationLayer()
+        animatedLayer.frame = self.bounds
+    }
+}
+
+class ProgressBarAnimationLayer: ProgressAnimationLayer {
+    override func draw(in ctx: CGContext) {
+        UIGraphicsPushContext(ctx)
+        let size = ctx.convertToUserSpace(CGSize(width: ctx.width, height: ctx.height))
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        TestStyleKit.drawProgressBarDisplay(frame: rect, resizing: .aspectFit, progress: progress)
+        UIGraphicsPopContext()
+    }
 }

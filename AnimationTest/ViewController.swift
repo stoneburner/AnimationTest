@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var smallCircleView3: CircleProgressView!
     @IBOutlet weak var smallCircleView4: CircleProgressView!
 
+    @IBOutlet weak var barProgressView: BarProgressView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,7 @@ class ViewController: UIViewController {
         smallCircleView2.progress = CGFloat(Double.random(in: 0...1))
         smallCircleView3.progress = CGFloat(Double.random(in: 0...1))
         smallCircleView4.progress = CGFloat(Double.random(in: 0...1))
+        barProgressView.progress = CGFloat(Double.random(in: 0...1))
     }
     
 }

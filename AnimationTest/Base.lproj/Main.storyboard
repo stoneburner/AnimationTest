@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="ApD-LK-gXq">
-                                <rect key="frame" x="20" y="64" width="374" height="517.5"/>
+                                <rect key="frame" x="20" y="64" width="374" height="730"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wCz-M7-A2N">
                                         <rect key="frame" x="37" y="0.0" width="300" height="155"/>
@@ -90,8 +90,21 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDJ-gj-ynI" customClass="BarProgressView" customModule="AnimationTest" customModuleProvider="target">
+                                        <rect key="frame" x="67" y="477.5" width="240" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="240" id="0k4-Zb-UeQ"/>
+                                            <constraint firstAttribute="height" constant="50" id="mIA-mW-7HN"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6m-ds-bdo">
-                                        <rect key="frame" x="124" y="487.5" width="126" height="30"/>
+                                        <rect key="frame" x="124" y="700" width="126" height="30"/>
                                         <state key="normal" title="Set Random Value"/>
                                         <connections>
                                             <action selector="setRandomValueTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Xb-je-pdj"/>
@@ -109,6 +122,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="barProgressView" destination="RDJ-gj-ynI" id="GPP-W9-FmG"/>
                         <outlet property="progressView" destination="ZZc-JO-D6g" id="DWV-yp-0rH"/>
                         <outlet property="smallCircleView" destination="FEC-fV-JXa" id="bLK-ZC-qRg"/>
                         <outlet property="smallCircleView2" destination="9Mb-NJ-4ZW" id="0yq-X6-xMw"/>

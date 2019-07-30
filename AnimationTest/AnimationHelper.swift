@@ -10,22 +10,23 @@ import UIKit
 
 typealias DrawingFunction = (_ frame: CGRect, _ resizing: TestStyleKit.ResizingBehavior, _ progress: CGFloat) -> Void
 
-class ProgressAnimationHelperLayer: CALayer {
+protocol Progressable: CALayer {
+    var progress: CGFloat { get set }
+}
+
+class ProgressAnimationLayer: CALayer, Progressable {
     @NSManaged var progress: CGFloat
     private static let keyName = "progress"
 
-    static var drawingFunction: DrawingFunction?
-
-    init(drawingFunction: @escaping DrawingFunction) {
+    override init() {
         super.init()
         progress = 0
-        ProgressAnimationHelperLayer.drawingFunction = drawingFunction
         needsDisplayOnBoundsChange = true
     }
 
     override init(layer: Any) {
         super.init(layer: layer)
-        if let layer = layer as? ProgressAnimationHelperLayer {
+        if let layer = layer as? Progressable {
             progress = layer.progress
         }
     }
@@ -39,21 +40,13 @@ class ProgressAnimationHelperLayer: CALayer {
     }
 
     override func action(forKey event: String) -> CAAction? {
-        if event == ProgressAnimationHelperLayer.keyName {
+        if event == ProgressAnimationLayer.keyName {
             let animation = CABasicAnimation(keyPath: event)
             animation.fromValue = self.presentation()?.value(forKey: event)
             return animation
         } else {
             return super.action(forKey: event)
         }
-    }
-
-    override func draw(in ctx: CGContext) {
-        UIGraphicsPushContext(ctx)
-        let size = ctx.convertToUserSpace(CGSize(width: ctx.width, height: ctx.height))
-        let rect = CGRect(origin: CGPoint.zero, size: size)
-        ProgressAnimationHelperLayer.drawingFunction?(rect, .aspectFit, progress)
-        UIGraphicsPopContext()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -63,7 +56,7 @@ class ProgressAnimationHelperLayer: CALayer {
 }
 
 protocol AnimatedUIView: UIView {
-    var animatedLayer: ProgressAnimationHelperLayer { get set }
+    var animatedLayer: Progressable { get set }
     var progress: CGFloat { get set }
     var stateKeyName: String { get set }
 }
@@ -91,6 +84,7 @@ extension AnimatedUIView {
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(timing)
         animatedLayer.progress = progress
+
         CATransaction.commit()
         animatedLayer.setValue(!layerState, forKey: stateKeyName)
     }
