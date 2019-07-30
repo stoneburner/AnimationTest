@@ -19,16 +19,6 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var barProgressView: BarProgressView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        smallCircleView.progress = 0.3
-        smallCircleView.layoutSubviews()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
     @IBAction func setRandomValueTapped(_ sender: Any) {
         progressView.progress = CGFloat(Double.random(in: 0...1))
         smallCircleView.progress = CGFloat(Double.random(in: 0...1))
