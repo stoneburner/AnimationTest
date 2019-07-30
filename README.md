@@ -5,4 +5,4 @@ draw method provided by a [paintcode](https://www.paintcodeapp.com) stylekit.
 
 ![demo](demo.gif)
 
-Everything relevant is in [CustomProgressView.swift](AnimationTest/AnimationHelper.swift)
+Everything relevant is in [AnimationHelper.swift](AnimationTest/AnimationHelper.swift)
